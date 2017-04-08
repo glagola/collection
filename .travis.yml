@@ -8,3 +8,8 @@ install:
 - travis_retry composer dump-autoload
 
 script: ./vendor/bin/phpunit
+
+cache:
+  directories:
+    - vendor
+    - $HOME/.composer/cache
