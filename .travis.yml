@@ -7,5 +7,6 @@ install:
 - export PATH="$HOME/.composer/vendor/bin:$PATH"
 - travis_retry composer install --prefer-dist --no-interaction
 - travis_retry composer dump-autoload
+- ls -l
 
 script: phpunit
