@@ -9,4 +9,4 @@ install:
 - travis_retry composer dump-autoload
 - ls -l
 
-script: phpunit
+script: ./vendor/bin/phpunit
