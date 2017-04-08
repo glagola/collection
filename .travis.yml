@@ -1,5 +1,10 @@
 language: php
+
 php:
 - 7.1
-install: composer install
+
+install: 
+- travis_retry composer install --prefer-dist --no-interaction
+- travis_retry composer dump-autoload
+
 script: phpunit
