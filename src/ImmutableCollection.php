@@ -228,6 +228,10 @@ abstract class ImmutableCollection implements \IteratorAggregate
      */
     public function empty(): bool
     {
+        if ([] !== $this->added) {
+            return false;
+        }
+        
         return 0 === $this->count();
     }
     
