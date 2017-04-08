@@ -192,4 +192,52 @@ abstract class ImmutableCollection implements \IteratorAggregate
     {
         return iterator_count($this->getItemsWithChanges());
     }
+    
+    /**
+     * Checks if the $item already in collection
+     *
+     * @param IdentifiableCollectionItem $item
+     *
+     * @return bool
+     */
+    public function has(IdentifiableCollectionItem $item): bool
+    {
+        $id = $item->identity();
+        if (isset($this->added[$id])) {
+            return true;
+        }
+        
+        if (isset($this->removed[$id])) {
+            return false;
+        }
+        
+        /** @var IdentifiableCollectionItem $item */
+        foreach ($this->getItemsWithChanges() as $item) {
+            if ($id === $item->identity()) {
+                return true;
+            }
+        }
+        
+        return false;
+    }
+    
+    /**
+     * Checks if collection is empty
+     *
+     * @return bool
+     */
+    public function empty(): bool
+    {
+        return 0 === $this->count();
+    }
+    
+    /**
+     * Converts collection to array
+     *
+     * @return array
+     */
+    public function toArray(): array
+    {
+        return iterator_to_array($this->getItemsWithChanges());
+    }
 }

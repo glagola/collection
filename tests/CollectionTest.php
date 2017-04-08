@@ -24,6 +24,14 @@ class CollectionTest extends TestCase
         
         $this->assertEquals(0, $collection->count());
         $this->assertEquals([], iterator_to_array($collection));
+        
+        $this->assertTrue($collection->empty());
+        
+        $collection = $collection->add(new Item(1));
+        $this->assertNotEquals(0, $collection->count());
+        $this->assertNotEquals([], iterator_to_array($collection));
+    
+        $this->assertFalse($collection->empty());
     }
     
     public function testCollectionImmutability()
@@ -131,5 +139,37 @@ class CollectionTest extends TestCase
         $collection = $collection->add($item);
     
         $this->assertEquals(0, $collection->count());
+    }
+    
+    public function testHasItem()
+    {
+        $item = new Item('10');
+        
+        /** @var Collection $collection */
+        $collection = $this->newCollection([
+            $item,
+        ]);
+        $this->assertTrue($collection->has($item));
+        
+        $item2 = new Item('20');
+        $this->assertFalse($collection->has($item2));
+        
+        $item3 = new Item('30');
+        $collection = $collection->add($item3);
+        $this->assertTrue($collection->has($item3));
+        
+        $collection = $this->newCollection([$item])->remove($item);
+        $this->assertFalse($collection->has($item));
+    }
+    
+    public function testToArray()
+    {
+        $items = [
+            new Item(1),
+            new Item(2),
+            new Item(3),
+        ];
+        $collection = $this->newCollection($items);
+        $this->assertTrue($items === $collection->toArray());
     }
 }
