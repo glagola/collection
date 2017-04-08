@@ -70,12 +70,19 @@ abstract class ImmutableCollection implements \IteratorAggregate
     public function add(IdentifiableCollectionItem ...$items): self
     {
         $added = $this->added;
+        $removed = $this->removed;
         
         foreach ($items as $item) {
-            $added[$item->identity()] = $item;
+            $id = $item->identity();
+            
+            if (isset($removed[$id])) {
+                unset($removed[$id]);
+            } else {
+                $added[$id] = $item;
+            }
         }
         
-        return new static($this->itemsProxy, $this->items, $added, $this->removed);
+        return new static($this->itemsProxy, $this->items, $added, $removed);
     }
     
     /**
@@ -87,13 +94,20 @@ abstract class ImmutableCollection implements \IteratorAggregate
      */
     public function remove(IdentifiableCollectionItem ...$items): self
     {
+        $added = $this->added;
         $removed = $this->removed;
     
         foreach ($items as $item) {
-            $removed[$item->identity()] = $item;
+            $id = $item->identity();
+            
+            if (isset($added[$id])) {
+                unset($added[$id]);
+            } else {
+                $removed[$id] = $item;
+            }
         }
     
-        return new static($this->itemsProxy, $this->items, $this->added, $removed);
+        return new static($this->itemsProxy, $this->items, $added, $removed);
     }
     
     /**

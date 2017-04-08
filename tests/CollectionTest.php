@@ -10,9 +10,12 @@ class CollectionTest extends TestCase
 {
     private function newCollection(array $items): Collection
     {
-        return Collection::instance(function () use ($items) {
+        /** @var Collection $instance */
+        $instance = Collection::instance(function () use ($items) {
             return $items;
         });
+        
+        return $instance;
     }
     
     public function testEmpty()
@@ -30,11 +33,9 @@ class CollectionTest extends TestCase
         $collection = $this->newCollection([$item]);
         
         $collection->add($item);
-        
         $this->assertEquals(1, $collection->count());
         
         $collection->remove($item);
-        
         $this->assertEquals(1, $collection->count());
     }
     
@@ -87,6 +88,7 @@ class CollectionTest extends TestCase
     
     public function testCheckItemsUniquenessAfterAddingNewItem()
     {
+        /** @var Collection $collection */
         $collection = $this->newCollection([
             new Item('10'),
         ]);
@@ -105,5 +107,29 @@ class CollectionTest extends TestCase
         $this->assertEquals(1, $collection->count());
         $items = iterator_to_array($collection);
         $this->assertTrue($items[0]->identity() === '10');
+    }
+    
+    public function testRemoveAddedItem()
+    {
+        /** @var Collection $collection */
+        $collection = $this->newCollection([]);
+        $item = new Item('10');
+        
+        $collection = $collection->add($item);
+        $collection = $collection->remove($item);
+        
+        $this->assertEquals(0, $collection->count());
+    }
+    
+    public function testAddRemovedItem()
+    {
+        /** @var Collection $collection */
+        $collection = $this->newCollection([]);
+        $item = new Item('10');
+    
+        $collection = $collection->remove($item);
+        $collection = $collection->add($item);
+    
+        $this->assertEquals(0, $collection->count());
     }
 }
