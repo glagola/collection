@@ -1,0 +1,35 @@
+{
+  "name": "glagola/collection",
+  "description": "A library provides immutable collection, which can tell which items was added or removed",
+  "type": "library",
+  "license":           "MIT",
+  "homepage":          "https://github.com/glagola/collection",
+  "authors": [
+    {
+      "name": "Igor Glagola",
+      "email": "igor@glagola.ru"
+    }
+  ],
+
+  "keywords": [
+    "collection",
+    "immutable",
+    "diff"
+  ],
+  "require": {
+    "php": "^7.1.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "glagola\\collections\\": "src/"
+    }
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^6.1"
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "tests\\": "tests/"
+    }
+  }
+}
